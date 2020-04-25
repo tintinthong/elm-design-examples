@@ -17,7 +17,8 @@ import Element exposing (
     height, 
     paddingXY, 
     alignLeft,
-    image)
+    image,
+    mouseOver)
 import Element.Background as Background
 import Element.Border as Border
 import Element.Font as Font
@@ -53,16 +54,20 @@ generateCards n =
     case n of
     0 -> []
     _ -> [ { title = String.fromInt n , subtitle = "Subtitle", imageUrl = chooseImage n }] ++ generateCards (n-1) 
-    --_ -> let x = generateCards (n-1) in 
-    --    List.append [ { title = String.fromInt n , subtitle = "hehe" }] x
+    
 transformListUI : List CardData -> List (Element msg)
 transformListUI xs = List.map card xs     
 
  
 rowOfCards =
-    row [ width fill, centerY, spacing 10,padding 10, Border.width 2 ] 
+    row [ 
+    width fill, 
+    centerY, 
+    spacing 10,
+    padding 10, 
+    Border.width 2 ] 
         <| transformListUI 
-        <| generateCards 3 
+        <| generateCards 2 
 
 type Msg = Maybe String  
 
@@ -74,21 +79,7 @@ update msg model =
         { model | content = somestring}
          
 
-blue =
-    Element.rgb255 238 238 238
-
-purple =
-    Element.rgb255 128 0 128
     
-myButton =
-    Input.button
-        [ Background.color blue
-        , Element.focused
-            [ Background.color purple ]
-        ]
-        { onPress = Just "clickthedamnbutton"
-        , label = text "My Button"
-        }
 
         
 card : CardData -> Element msg
@@ -106,6 +97,7 @@ card cardData = Element.el
             headerUI {title = cardData.title, subtitle= cardData.subtitle}
             ,imageUI cardData.imageUrl
             ,descriptionUI "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum"
+            ,buttonUI
             
         ]
     )
@@ -146,10 +138,10 @@ headerUI titleObj = Element.column
             ]
 
 descriptionUI : String -> Element msg 
-descriptionUI content = Element.paragraph
-            [
-            Border.width 2 
-            ,paddingXY 10 10
+descriptionUI content = 
+            Element.textColumn [ 
+            width fill  
+            ,Border.width 2 
             ,Font.size 12 
             ,Font.extraLight 
             ,Font.family
@@ -160,14 +152,45 @@ descriptionUI content = Element.paragraph
                 , Font.sansSerif
                ]
             ,Font.alignLeft
+            ,spacing 10
+            , padding 10 
             ]
             [
-            Element.text <| content 
+            Element.paragraph
+            [][Element.text <| content]
             ]
 
 imageUI : String -> Element msg 
 imageUI url = image [Border.width 2, width fill] 
             { src = url, description = "Some image"}
  
+
+white =
+    Element.rgb255 255 255 255 
+
+lightblue =
+    Element.rgb255 205 235 249
+    
+blue =
+    Element.rgb255 69 179 231
+    
+buttonUI : Element msg 
+buttonUI = 
+    Input.button
+        [ 
+        mouseOver [
+            Background.color lightblue
+        ]
+        ,Font.size 16
+        ,padding 10
+        ,Border.width 2
+        ,Background.color white
+        , Element.focused
+            [ Background.color blue ]
+        ]
+        { 
+        onPress = Nothing 
+        , label = text "Click Here"
+        }
  
  
