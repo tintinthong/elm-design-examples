@@ -41,7 +41,7 @@ newCard : CardData
 newCard = {title =  "Some title" , subtitle = "", imageUrl = Tuple.second imageURLs} 
 
 isEven : Int -> Bool
-isEven = (\x -> modBy 2 0 == 0)
+isEven = (\x -> modBy 2 x == 0)
 
 chooseImage : Int -> String 
 chooseImage n = if(isEven n) then Tuple.second imageURLs else Tuple.first imageURLs
