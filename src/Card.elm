@@ -36,9 +36,9 @@ type alias Model = { content : String}
 init : Model 
 init = { content = "" }
 
-type alias CardData = { title: String , subtitle: String, imageUrl: String}
+type alias CardSchema = { title: String , subtitle: String, imageUrl: String}
 
-newCard : CardData
+newCard : CardSchema
 newCard = {title =  "Some title" , subtitle = "", imageUrl = Tuple.second imageURLs} 
 
 isEven : Int -> Bool
@@ -49,16 +49,16 @@ chooseImage n = if(isEven n) then Tuple.second imageURLs else Tuple.first imageU
 
 imageURLs = (  "https://bit.ly/2VS0QBW","https://bit.ly/3eMl8FA")
 
-generateCards : Int -> List CardData 
+generateCards : Int -> List CardSchema 
 generateCards n = 
     case n of
     0 -> []
     _ -> [ { title = String.fromInt n , subtitle = "Subtitle", imageUrl = chooseImage n }] ++ generateCards (n-1) 
     
-transformListUI : List CardData -> List (Element Msg)
+transformListUI : List CardSchema -> List (Element Msg)
 transformListUI xs = List.map card xs     
 
-loremipsum = "some whatever text here" 
+loremipsum = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged." 
  
 rowOfCards =
     row [ 
@@ -79,7 +79,7 @@ update msg model =
             { model | content = "You clicked something, you dummy" }
          
         
-card : CardData -> Element Msg
+card :  CardSchema -> Element Msg
 card cardData = Element.el
     [ Background.color (rgb255 255 255 255)
     , Font.color (rgb255 0 0 0)
@@ -93,7 +93,7 @@ card cardData = Element.el
         [ 
             headerUI {title = cardData.title, subtitle= cardData.subtitle}
             ,imageUI cardData.imageUrl
-            ,descriptionUI "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum"
+            ,descriptionUI loremipsum 
             ,buttonUI
             
         ]
