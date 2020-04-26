@@ -55,9 +55,10 @@ generateCards n =
     0 -> []
     _ -> [ { title = String.fromInt n , subtitle = "Subtitle", imageUrl = chooseImage n }] ++ generateCards (n-1) 
     
-transformListUI : List CardData -> List (Element msg)
+transformListUI : List CardData -> List (Element Msg)
 transformListUI xs = List.map card xs     
 
+loremipsum = "some whatever text here" 
  
 rowOfCards =
     row [ 
@@ -69,20 +70,16 @@ rowOfCards =
         <| transformListUI 
         <| generateCards 2 
 
-type Msg = Maybe String  
+-- type Msg = ClickedButton 
+type Msg = ClickedButton 
 
 update msg model = 
     case msg of 
-    Nothing ->
-        { model | content = "" } 
-    Just somestring ->
-        { model | content = somestring}
+        ClickedButton ->
+            { model | content = "You clicked something, you dummy" }
          
-
-    
-
         
-card : CardData -> Element msg
+card : CardData -> Element Msg
 card cardData = Element.el
     [ Background.color (rgb255 255 255 255)
     , Font.color (rgb255 0 0 0)
@@ -174,7 +171,7 @@ lightblue =
 blue =
     Element.rgb255 69 179 231
     
-buttonUI : Element msg 
+buttonUI : Element Msg 
 buttonUI = 
     Input.button
         [ 
@@ -189,7 +186,7 @@ buttonUI =
             [ Background.color blue ]
         ]
         { 
-        onPress = Nothing 
+        onPress = Just ClickedButton
         , label = text "Click Here"
         }
  
